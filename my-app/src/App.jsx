@@ -4259,7 +4259,7 @@ function App() {
             className='w-2xl rounded-4xl p-2 align-center mx-auto border border-black ' 
             placeholder='Search any movie you want....'   
             name="" 
-            value={}
+            // value={}
             id="" />
           </div>
 
