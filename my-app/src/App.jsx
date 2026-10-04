@@ -4295,10 +4295,10 @@ function Movies() {
       </div>
       </div>
       
-      <div className="absolute bg-gray-800 text-white w-4xl h-7xl z-99 top-8 left-18">
+      <div className="absolute bg-gray-800 text-white w-4xl h-7xl rounded-2xl z-99 top-8 left-18 p-3">
         {viewMore && 
         (
-                <div className="border border-black rounded-xl p-4 " key={viewMore.id}>
+                <div className="rounded-2xl p-4 " key={viewMore.id}>
                   <div className="">
                     <div className="">
                       <img src={viewMore.poster} alt={viewMore.title} className='rounded-2xl max-w-52 max-h-52' />
@@ -4352,8 +4352,9 @@ function Movies() {
                       </span>
 
                   </div>
-
-
+                  <div className="mt-8">
+                                <span onClick={() => { setViewMore(null); searchedMovies.length = 0; }} className=' my-12 rounded-xl p-4 bg-red-400 font-bold text-red-800'>Close Modal</span>
+                  </div>
                 </div>
               )}
       </div>
