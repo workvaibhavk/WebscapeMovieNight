@@ -1,7 +1,4 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
+import { useEffect, useState } from 'react'
 import './App.css'
 const movies = [
   {
@@ -4126,19 +4123,47 @@ const movies = [
   }
 ]
 
-function App() {
+function Movies() {
   const [takenInput, setTakenInput] = useState(false)
   const [searchedMovies, setSearchedMovies] = useState([]);
+  const [sortingBy, setSortingBy] = useState("nill")
+  const [sortedMovies, setSortedMovies] = ([])
+  const [viewMore, setViewMore] = useState(null)
+ let sorty = []
 
   const handleSearch = (searched) => {
     setTakenInput(true)
-    if(!searched) return;
+    if (!searched) return;
     console.log(searched)
     const searchedPrrrrr = searched.toLowerCase();
-    const searchedAns = movies.filter((movie)=> movie.title.toLowerCase().includes(searchedPrrrrr));
+    const searchedAns = movies.filter((movie) => movie.title.toLowerCase().includes(searchedPrrrrr));
     console.log(searchedAns)
     setSearchedMovies(searchedAns)
   }
+
+  const handleSort = () => {
+    console.log(sortingBy)
+    if(sortingBy == "rating"){
+      sorty = movies.sort((movieA, movieB)=> movieA.rating - movieB.rating)
+      // setSortedMovies(sorty)
+      console.log(sorty)
+    }
+  }
+
+  // const viewMore = (id) => {
+
+  // }
+
+  useEffect(()=>{ 
+    handleSort();
+  }, [sortingBy])
+
+  useEffect(()=>{
+    if(viewMore){
+          console.log(viewMore.genres)
+
+    }
+  },[viewMore])
 
   return (
     // <>
@@ -4250,101 +4275,232 @@ function App() {
     //   <section id="spacer"></section>
     // </>
 
+
+
     <div className="">
-          <div className="bg-[#665bca] rounded-xl">Hiiii</div>
-          <div className="flex items-center py-4">
-            <input 
-            type="search" 
-            onChange={(e)=> handleSearch(e.target.value)}
-            className='w-2xl rounded-4xl p-2 align-center mx-auto border border-black ' 
-            placeholder='Search any movie you want....'   
-            name="" 
-            // value={}
-            id="" />
-          </div>
-
-{searchedMovies && searchedMovies.length > 0 && searchedMovies.length != movies.length && takenInput ?
-<div className="">
-
-  <div className="flex justify-between w-3/10 mx-auto items-center"><h2 className="text-4xl text-center font-bold py-8">Searched Movies</h2>
-  <span onClick={()=> {setTakenInput(false); }} className='font-bold text-red-800'>X</span></div>
-  
-          <div className="p-8 flex flex-wrap gap-4 justify-center">
-              {searchedMovies.slice(0,75).map((movie)=>{
-            return(
-              <div className="border border-black rounded-xl p-4 max-w-88" key={movie.id}>
-                <div className="">
+      <div className="bg-black text-white font-semibold rounded-lg text-3xl p-4 flex items-center justify-between mx-auto">
+       
+       <div className="flex items-center gap-2"> <h2>Culture</h2>
+        <span className='text-lg'>~ A Movie Browsing Experience</span></div>
+       
+        <div className="flex items-center py-4">
+        <input
+          type="search"
+          onChange={(e) => handleSearch(e.target.value)}
+          className='w-2xl text-sm rounded-2xl py-4 px-2 align-center mx-auto border border-gray '
+          placeholder='Search any movie you want....'
+          name=""
+          // value={}
+          id="" />
+      </div>
+      </div>
+      
+      <div className="absolute bg-gray-800 text-white w-4xl h-7xl z-99 top-8 left-18">
+        {viewMore && 
+        (
+                <div className="border border-black rounded-xl p-4 " key={viewMore.id}>
                   <div className="">
-                    <img src={movie.poster} alt={movie.title} className='rounded-2xl max-w-52 max-h-52' />
+                    <div className="">
+                      <img src={viewMore.poster} alt={viewMore.title} className='rounded-2xl max-w-52 max-h-52' />
+                    </div>
+                    <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Title: </h2>
+                      <p className='font-normal '>{viewMore.title}</p>
+                    </span>
+                    <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Director: </h2>
+                      <p className='font-normal '>{viewMore.director}</p>
+                    </span>
+                    <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Overview: </h2>
+                      <p className='font-normal '>{viewMore.overview}</p>
+                    </span>
+                    <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Industry: </h2>
+                      <p className='font-normal '>{viewMore.industry}</p>
+                    </span>
+                    <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Genres: </h2>
+                      <p className='font-normal '>{viewMore.genres.map((genre, index) => (
+                        <div key={index}>
+                          {genre}
+                          </div>
+                      ))}
+                      </p>
+                    </span>
+                    <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Year: </h2>
+                      <p className='font-normal '>{viewMore.year}</p>
+                    </span>
+                    <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Rating: </h2>
+                      <p className='font-normal '>{viewMore.rating}</p>
+                    </span>
+                    <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Language: </h2>
+                      <p className='font-normal '>{viewMore.language}</p>
+                    </span>
+
+ <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Cast: </h2>
+ <p className='font-normal '>{viewMore?.cast.map((genre, index) => (
+                        <div key={index}>
+                          {genre}
+                          </div>
+                      ))}
+                      </p>
+                      </span>
+
                   </div>
-                  <span className='flex gap-2'>
-                     <h2  className='font-semibold '>Title: </h2>
-                  <p className='font-normal '>{movie.title}</p>
-                  </span>
-                   <span className='flex gap-2'>
-                     <h2  className='font-semibold '>Director: </h2>
-                  <p className='font-normal '>{movie.director}</p>
-                  </span>
-                   <span className='flex gap-2'>
-                     <h2  className='font-semibold '>Overview: </h2>
-                  <p className='font-normal '>{movie.overview}</p>
-                  </span>
-                   <span className='flex gap-2'>
-                     <h2  className='font-semibold '>Industry: </h2>
-                  <p className='font-normal '>{movie.industry}</p>
-                  </span>
-                 
-             
+
+
                 </div>
-                
+              )}
+      </div>
+
+      {searchedMovies && searchedMovies.length > 0 && searchedMovies.length != movies.length && takenInput ?
+        <div className="">
+
+          <div className="flex justify-between w-3/10 mx-auto items-center"><h2 className="text-4xl text-center font-bold py-8">Searched Movies</h2>
+            <span onClick={() => { setTakenInput(false); searchedMovies.length = 0; }} className='font-bold text-red-800'>X</span></div>
+
+          <div className="p-8 flex flex-wrap gap-4 justify-center">
+            {searchedMovies.slice(0, 75).map((movie) => {
+              return (
+                <div className="border border-black rounded-xl p-4 max-w-88" key={movie.id}>
+                  <div className="">
+                    <div className="">
+                      <img src={movie.poster} alt={movie.title} className='rounded-2xl max-w-52 max-h-52' />
+                    </div>
+                    <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Title: </h2>
+                      <p className='font-normal '>{movie.title}</p>
+                    </span>
+                    <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Director: </h2>
+                      <p className='font-normal '>{movie.director}</p>
+                    </span>
+                    <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Overview: </h2>
+                      <p className='font-normal '>{movie.overview}</p>
+                    </span>
+                    <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Industry: </h2>
+                      <p className='font-normal '>{movie.industry}</p>
+                    </span>
+
+
+                  </div>
+
+
+                </div>
+              )
+            })}
+          </div>
+        </div> :
+        takenInput ? <h2 className="text-xl text-center font-bold py-8">No Movies Found for your searches</h2>
+          : <div className=""></div>
+      }
+
+      <h2 className="text-4xl text-center font-bold py-8">Movies</h2>
+      <div className="flex gap-4 w-10/12 mx-auto text-white">
+        <button
+          onClick={() => setSortingBy("rating")}
+          className='bg-[#665bca] px-4 py-2 rounded-lg font-semibold'>
+          Sort by rating
+        </button>
+        <button
+          onClick={() => setSortingBy("releaseyr")}
+          className='bg-[#665bca] px-4 py-2 rounded-lg font-semibold'
+        >
+          Sort by Release Year
+        </button>
+      </div>
+      <div className="p-8 flex flex-wrap gap-4 justify-center">
+        {sortingBy == "nill" && movies.slice(0, 75).map((movie) => {
+          return (
+            <div className="border border-black rounded-xl p-4 max-w-88"
+            // onClick={()=> handleCliiick(movie.id)} 
+            key={movie.id}
+             >
+              <div className="">
+                <div className="">
+                  <img src={movie.poster} alt={movie.title} className='rounded-2xl max-w-52 max-h-52' />
+                </div>
+                <span className='flex gap-2'>
+                  <h2 className='font-semibold '>Title: </h2>
+                  <p className='font-normal '>{movie.title}</p>
+                </span>
+                <span className='flex gap-2'>
+                  <h2 className='font-semibold '>Director: </h2>
+                  <p className='font-normal '>{movie.director}</p>
+                </span>
+                <span className='flex gap-2'>
+                  <h2 className='font-semibold '>Overview: </h2>
+                  <p className='font-normal '>{movie.overview}</p>
+                </span>
+                <span className='flex gap-2 mb-4'>
+                  <h2 className='font-semibold '>Industry: </h2>
+                  <p className='font-normal '>{movie.industry}</p>
+                </span>
+
+<p 
+onClick={()=> setViewMore(movie)}
+className='bg-[#665bca] px-4 py-2 my-4 rounded-lg font-semibold w-full text-white text-center'> See More</p>
 
               </div>
-            )
-          })}
-          </div>
-</div> :  
-takenInput ? <h2 className="text-xl text-center font-bold py-8">No Movies Found for your searches</h2>
-: <div className=""></div>
-   
-          }
 
-          <h2 className="text-4xl text-center font-bold py-8">Movies</h2>
+
+            </div>
+          )
+        })}
+      </div>
+
+       {sorty && sorty.length > 0  ?
+        <div className="">
+          <div className="flex justify-between w-3/10 mx-auto items-center"><h2 className="text-4xl text-center font-bold py-8">Searched Movies</h2>
+            <span onClick={() => { setTakenInput(false); searchedMovies.length = 0; }} className='font-bold text-red-800'>X</span></div>
+
           <div className="p-8 flex flex-wrap gap-4 justify-center">
-              {movies.slice(0,75).map((movie)=>{
-            return(
-              <div className="border border-black rounded-xl p-4 max-w-88" key={movie.id}>
-                <div className="">
+            {sorty.map((movie) => {
+              return (
+                <div className="border border-black rounded-xl p-4 max-w-88" key={movie.id}>
                   <div className="">
-                    <img src={movie.poster} alt={movie.title} className='rounded-2xl max-w-52 max-h-52' />
-                  </div>
-                  <span className='flex gap-2'>
-                     <h2  className='font-semibold '>Title: </h2>
-                  <p className='font-normal '>{movie.title}</p>
-                  </span>
-                   <span className='flex gap-2'>
-                     <h2  className='font-semibold '>Director: </h2>
-                  <p className='font-normal '>{movie.director}</p>
-                  </span>
-                   <span className='flex gap-2'>
-                     <h2  className='font-semibold '>Overview: </h2>
-                  <p className='font-normal '>{movie.overview}</p>
-                  </span>
-                   <span className='flex gap-2'>
-                     <h2  className='font-semibold '>Industry: </h2>
-                  <p className='font-normal '>{movie.industry}</p>
-                  </span>
-                 
-             
-                </div>
-                
+                    <div className="">
+                      <img src={movie.poster} alt={movie.title} className='rounded-2xl max-w-52 max-h-52' />
+                    </div>
+                    <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Title: </h2>
+                      <p className='font-normal '>{movie.title}</p>
+                    </span>
+                    <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Director: </h2>
+                      <p className='font-normal '>{movie.director}</p>
+                    </span>
+                    <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Overview: </h2>
+                      <p className='font-normal '>{movie.overview}</p>
+                    </span>
+                    <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Industry: </h2>
+                      <p className='font-normal '>{movie.industry}</p>
+                    </span>
 
-              </div>
-            )
-          })}
+
+                  </div>
+
+
+                </div>
+              )
+            })}
           </div>
-        
+        </div> :
+        takenInput ? <h2 className="text-xl text-center font-bold py-8">No Movies Found for your searches</h2>
+          : <div className=""></div>
+      }
+
     </div>
   )
 }
 
-export default App
+export default Movies
