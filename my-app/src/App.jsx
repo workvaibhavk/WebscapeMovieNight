@@ -4129,6 +4129,8 @@ function Movies() {
   const [sortingBy, setSortingBy] = useState("nill")
   const [sortedMovies, setSortedMovies] = ([])
   const [viewMore, setViewMore] = useState(null)
+    const [suggest, setSuggesttted] = useState(null)
+
  let sorty = []
 
   const handleSearch = (searched) => {
@@ -4150,9 +4152,11 @@ function Movies() {
     }
   }
 
-  // const viewMore = (id) => {
-
-  // }
+  const setSuggest = () => {
+console.log(movies[Math.ceil(Math.random()*10)])
+setSuggesttted(movies[Math.ceil(Math.random()*10)]
+)
+  }
 
   useEffect(()=>{ 
     handleSort();
@@ -4282,6 +4286,8 @@ function Movies() {
        
        <div className="flex items-center gap-2"> <h2>Culture</h2>
         <span className='text-lg'>~ A Movie Browsing Experience</span></div>
+
+        <p onClick={()=> setSuggest()} className='text-lg bg-[#665bca] py-3 px-2 border border-purple rounded-2xl'>Get A Quick Suggestion</p>
        
         <div className="flex items-center py-4">
         <input
@@ -4294,7 +4300,7 @@ function Movies() {
           id="" />
       </div>
       </div>
-      
+      {viewMore &&
       <div className="absolute bg-gray-800 text-white w-4xl h-7xl rounded-2xl z-99 top-8 left-18 p-3">
         {viewMore && 
         (
@@ -4358,6 +4364,74 @@ function Movies() {
                 </div>
               )}
       </div>
+      }
+
+        {suggest &&
+      <div className="absolute bg-gray-800 text-white w-4xl h-7xl rounded-2xl z-99 top-8 left-18 p-3">
+        {suggest && 
+        (
+                <div className="rounded-2xl p-4 " key={suggest.id}>
+                  <div className="">
+                    <div className="">
+                      <img src={suggest.poster} alt={suggest.title} className='rounded-2xl max-w-52 max-h-52' />
+                    </div>
+                    <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Title: </h2>
+                      <p className='font-normal '>{suggest.title}</p>
+                    </span>
+                    <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Director: </h2>
+                      <p className='font-normal '>{suggest.director}</p>
+                    </span>
+                    <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Overview: </h2>
+                      <p className='font-normal '>{suggest.overview}</p>
+                    </span>
+                    <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Industry: </h2>
+                      <p className='font-normal '>{suggest.industry}</p>
+                    </span>
+                    <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Genres: </h2>
+                      <p className='font-normal '>{suggest.genres.map((genre, index) => (
+                        <div key={index}>
+                          {genre}
+                          </div>
+                      ))}
+                      </p>
+                    </span>
+                    <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Year: </h2>
+                      <p className='font-normal '>{suggest.year}</p>
+                    </span>
+                    <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Rating: </h2>
+                      <p className='font-normal '>{suggest.rating}</p>
+                    </span>
+                    <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Language: </h2>
+                      <p className='font-normal '>{suggest.language}</p>
+                    </span>
+
+ <span className='flex gap-2'>
+                      <h2 className='font-semibold '>Cast: </h2>
+ <p className='font-normal '>{suggest?.cast.map((genre, index) => (
+                        <div key={index}>
+                          {genre}
+                          </div>
+                      ))}
+                      </p>
+                      </span>
+
+                  </div>
+                  <div className="mt-8">
+                                <span onClick={() => { setSuggesttted(null); searchedMovies.length = 0; }} className=' my-12 rounded-xl p-4 bg-red-400 font-bold text-red-800'>Close Modal</span>
+                  </div>
+                </div>
+              )}
+      </div>
+      }
+      
 
       {searchedMovies && searchedMovies.length > 0 && searchedMovies.length != movies.length && takenInput ?
         <div className="">
@@ -4446,12 +4520,10 @@ function Movies() {
                 </span>
 
 <p 
-onClick={()=> setViewMore(movie)}
+onClick={()=> {setViewMore(movie); scrollTo(0,0)}}
 className='bg-[#665bca] px-4 py-2 my-4 rounded-lg font-semibold w-full text-white text-center'> See More</p>
 
               </div>
-
-
             </div>
           )
         })}
